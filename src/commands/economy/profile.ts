@@ -19,7 +19,7 @@ export class ProfileCommand extends BaseCommand {
       help: 'profile [member]',
       enabled: true,
       editable: true,
-      prefixes: ['e!', '?'],
+      prefixes: ['e!', '$'],
       reaction: '💵'
     });
   }

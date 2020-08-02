@@ -14,7 +14,7 @@ export class PromoteCommand extends BaseCommand {
       description: 'Promotes the member to the specified level',
       reaction: '⚒️',
       category: 'admin',
-      prefixes: ['p!', '?', '!'],
+      prefixes: ['p!', '$', '!'],
       editable: true,
       enabled: true,
       adminOnly: true,

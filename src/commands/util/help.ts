@@ -10,7 +10,7 @@ export class HelpCommand extends BaseCommand {
   public constructor() {
     super({
       aliases: ['commands'],
-      prefixes: ['h!', '?', '!', 'c!', '$'],
+      prefixes: ['h!', '$', '!', 'c!'],
       category: 'util',
       help: 'help [command]',
       description: 'Sends a rich embed about [the specified] command(s)',

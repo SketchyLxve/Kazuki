@@ -9,7 +9,7 @@ export class PreviewCommand extends BaseCommand {
     super({
       aliases: ['guildpreview', 'previewguild', 'pg', 'gp', 'preview guild', 'guild preview'],
       category: 'util',
-      prefixes: ['gp!', 'pg!', '?', '!'],
+      prefixes: ['gp!', 'pg!', '$', '!'],
       help: 'preview {guild_id}',
       description: 'Displays any public data available to the /preview/ endpoint. This is only for public guilds.',
       editable: true,

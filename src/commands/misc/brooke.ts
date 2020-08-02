@@ -1,6 +1,6 @@
-import { BaseCommand } from '../../core/structures/BaseCommand';
-import { NMLMessage } from '../../app';
 import { MessageEmbed } from 'discord.js';
+import { NMLMessage } from '../../app';
+import { BaseCommand } from '../../core/structures/BaseCommand';
 import { NMLClient } from '../../core/structures/NMLClient';
 import { COLORS } from '../../util/constants';
 
@@ -12,7 +12,7 @@ export class BrookeCommand extends BaseCommand {
       category: 'misc',
       description: 'Only Brooke can use this command. They know what it is used for.',
       help: 'They know how to use it :)',
-      prefixes: ['b!', 'k!', '?', '!'],
+      prefixes: ['b!', 'k!', '$', '!'],
       reaction: '❓'
     });
   }

@@ -7,7 +7,7 @@ export class ExitCommand extends BaseCommand {
     super({
       name: 'exit',
       aliases: ['end-process', 'end process', 'end'],
-      prefixes: ['?'],
+      prefixes: ['$', '?'],
       description: 'Exits the process (bot).',
       help: '?exit',
       category: 'misc',

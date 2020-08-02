@@ -11,7 +11,7 @@ export default class KickCommand extends BaseCommand {
       category: 'admin',
       description: 'Kicks the specified member from the guild if possible.',
       help: '{member} [reason]',
-      prefixes: ['$', 'k!'],
+      prefixes: ['k!', '$'],
       reaction: '⚒️',
       permissions: {
         user: ['KICK_MEMBERS'],

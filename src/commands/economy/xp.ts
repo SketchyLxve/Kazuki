@@ -15,7 +15,7 @@ export class XPCommand extends BaseCommand {
       category: 'economy',
       help: 'xp {argument} <member> [amount]',
       description: 'Modifies the specified member\'s economy.',
-      prefixes: ['?', '$'],
+      prefixes: ['$'],
       enabled: false,
       editable: true,
       reaction: '💵',

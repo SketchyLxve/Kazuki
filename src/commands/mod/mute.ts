@@ -12,7 +12,7 @@ export default class Mute extends BaseCommand {
       category: 'mod',
       help: 'mute <member> [reason?] [--time=\'\'/-t=\'\'?] [--hard/-h?] [--link=\'\'/-l=\'\'?]',
       enabled: true,
-      prefixes: ['$', '!', 'a!'],
+      prefixes: ['!', 'a!', '$'],
       permissions: {
         user: ['MANAGE_MESSAGES'],
         client: ['MANAGE_ROLES']

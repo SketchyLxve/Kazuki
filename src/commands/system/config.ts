@@ -20,7 +20,7 @@ export default class ConfigCommand extends BaseCommand {
         user: ['ADMINISTRATOR', 'MANAGE_GUILD']
       },
       reaction: '💻',
-      prefixes: ['cfg!', '?', '$'],
+      prefixes: ['cfg!', '$'],
       target: false
     });
   }

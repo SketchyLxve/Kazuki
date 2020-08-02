@@ -11,7 +11,7 @@ export class DemoteCommand extends BaseCommand {
       aliases: ['declass', 'downgrade', 'dethrone', 'cashier'],
       help: 'demote {member} [reason?] OR demote config insert/remove {role, role2}',
       description: 'Demotes the specified member (removes all specified roles, supposedly that correspond to moderation power)',
-      prefixes: ['d!', '?', '!'],
+      prefixes: ['d!', '$', '!'],
       editable: true,
       enabled: true,
       category: 'admin',

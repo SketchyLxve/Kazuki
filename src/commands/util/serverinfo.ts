@@ -11,7 +11,7 @@ export class ServerCommand extends BaseCommand {
       category: 'util',
       help: 'si',
       description: 'Displays information about the guild the command has been ran in.',
-      prefixes: ['s!', '?', '!'],
+      prefixes: ['s!', '$', '!'],
       enabled: true,
       editable: true,
       reaction: '🚙'

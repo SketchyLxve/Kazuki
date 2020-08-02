@@ -11,7 +11,7 @@ export class UnmuteCommand extends BaseCommand {
       category: 'mod',
       description: 'Unmutes the specified member if they are muted.',
       help: 'unmute <member>',
-      prefixes: ['m!', '?'],
+      prefixes: ['m!', '$'],
       reaction: '🛡️',
       permissions: {
         user: ['MANAGE_MESSAGES']

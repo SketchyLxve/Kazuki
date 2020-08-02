@@ -15,7 +15,7 @@ export default class BlacklistCommand extends BaseCommand {
       enabled: true,
       editable: false,
       target: true,
-      prefixes: ['?', 'b!'],
+      prefixes: ['$', 'b!'],
       adminOnly: true
     });
   }
