@@ -12,7 +12,7 @@ export class UserinfoCommand extends BaseCommand {
       category: 'util',
       help: 'userinfo [member]',
       description: 'Displays information about the [specified] member, in detail.',
-      prefixes: ['ui!', '?', '!'],
+      prefixes: ['ui!', '$', '!'],
       editable: true,
       reaction: '🚙'
     });
@@ -53,7 +53,7 @@ export class UserinfoCommand extends BaseCommand {
       .addField('Username', member.user.username, true)
       .addField('#', member.user.discriminator, true)
       .addField('Tag', member.user.tag, true)
-      .addField('Nitro Booster?', member.premiumSince ? `Yes \n${moment(member.premiumSinceTimestamp).format('LLL')}` : 'No', true)
+      .addField('Nitro Booster?', member.premiumSince ? `${moment(member.premiumSinceTimestamp).format('LLL')}` : 'No', true)
       .addField('Bot', member.user.bot ? 'This user is a bot' : 'This user is **not** a bot.', true)
       .addField('Status', status[member.user.presence.status], true)
       .addField(
