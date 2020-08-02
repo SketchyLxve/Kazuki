@@ -54,7 +54,7 @@ export abstract class BaseCommand {
       };
     }
 
-    this.prefixes = [...data.prefixes?.filter((e, i) => data.prefixes.indexOf(e) === i) ?? [], 'nml!', '?', 'nml ', 'nml'];
+    this.prefixes = [...data.prefixes?.filter((e, i) => data.prefixes.indexOf(e) === i) ?? [], 'nml!', 'nml ', 'nml'];
 
     this.reaction = data.reaction ?? '';
 
