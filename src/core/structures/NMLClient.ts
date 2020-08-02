@@ -3,7 +3,7 @@ import {
   ClientOptions,
   Collection,
   GuildMember,
-  Message, MessageEmbed, Snowflake, User
+  Message, MessageEmbed, Snowflake, TextChannel, User
 } from 'discord.js';
 import * as fs from 'fs';
 import { createConnection, getConnectionOptions } from 'typeorm';
@@ -213,6 +213,8 @@ export class NMLClient extends Client {
   }
 
   public async handle(message: NMLMessage) {
+    if (!(message.channel as TextChannel).permissionsFor(this.user).has('SEND_MESSAGES')) return;
+
     const find = await this.findCommand(message) as { command: BaseCommand; prefixLess: NMLMessage } | null;
     const { command = null, prefixLess } = find || {};
 
