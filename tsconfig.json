@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowJs": true,
+        "checkJs": true,
+        "inlineSourceMap": false,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "outDir": "dist",
+        "resolveJsonModule": true,
+        "removeComments": true,
+        "skipDefaultLibCheck": true,
+        "downlevelIteration": true,
+        "pretty": true,
+        "target": "ESNext"
+    },
+
+    "include": [
+        "src"
+    ],
+
+    "exclude": [
+        "node_modules"
+    ]
+}
