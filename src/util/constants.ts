@@ -51,7 +51,7 @@ export interface BaseCommandData {
   ownerOnly?: boolean;
   permissions?: PermissionsData;
   prefixes?: string[];
-  reaction?: string;
+  reaction?: BaseCommandReaction;
   roles?: RoleResolvable[];
   target?: boolean;
 }
@@ -61,6 +61,12 @@ export interface CategoryData<T> {
   reaction: string;
   name: string;
   data: T[];
+}
+
+export interface CommandExample {
+  prefix: string;
+  keyword: string;
+  arg: string;
 }
 
 export interface NMLClientOptions {
@@ -158,6 +164,8 @@ export enum PUNISHMENT {
 export type ActionType = 'ban' | 'blacklist' | 'tempban' | 'softban' | 'kick' | 'mute' | 'unmute' | 'unban' | 'promote' | 'partial demote' | 'full demote' | 'fd' | 'pd';
 
 export type ActionDemoteData = Omit<ActionHandlerTypeData & { demoteCategory: string }, 'duration'>;
+
+export type BaseCommandReaction = '⚒️' | '🛡️' | '💵' | '❓' | '💻' | '🚙';
 
 export type CommandCategory = 'admin' | 'mod' | 'misc' | 'economy' | 'system' | 'util';
 

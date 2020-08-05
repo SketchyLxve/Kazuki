@@ -1,6 +1,6 @@
 import { GuildMember, RoleResolvable, User } from 'discord.js';
 import { NMLMessage } from '../../app';
-import { BaseCommandData, CommandCategory, PermissionsData } from '../../util/constants';
+import { BaseCommandData, BaseCommandReaction, CommandCategory, PermissionsData } from '../../util/constants';
 import { NMLClient } from './NMLClient';
 
 export abstract class BaseCommand {
@@ -18,9 +18,21 @@ export abstract class BaseCommand {
   public ownerOnly?: boolean;
   public permissions?: PermissionsData;
   public prefixes?: string[];
-  public reaction?: string;
+  public reaction?: BaseCommandReaction;
   public roles?: RoleResolvable[];
   public target?: boolean;
+
+  private readonly cat = {
+    admin: '⚒️',
+    mod: '🛡️',
+    economy: '💵',
+    misc: '❓',
+    system: '💻',
+    util: '🚙',
+    get eco() {
+      return this.economy;
+    }
+  };
 
   public constructor(data: BaseCommandData) {
     this.adminOnly = data.adminOnly;
@@ -56,7 +68,7 @@ export abstract class BaseCommand {
 
     this.prefixes = [...data.prefixes?.filter((e, i) => data.prefixes.indexOf(e) === i) ?? [], 'nml!', 'nml ', 'nml'];
 
-    this.reaction = data.reaction ?? '';
+    this.reaction = data.reaction ?? this.cat[this.category] as BaseCommandReaction;
 
     this.roles = data.roles;
 
