@@ -12,6 +12,7 @@ interface ExtractData {
   target: GuildMember | null;
   role: Role | null;
 }
+
 export default class RoleCommand extends BaseCommand {
   public constructor() {
     super({
@@ -29,6 +30,15 @@ export default class RoleCommand extends BaseCommand {
 
   public async run(client: NMLClient, message: NMLMessage) {
     const { err, target, role } = await this.extract(message);
+
+    if (role && role.comparePositionTo(message.member.roles.highest) >= 0) {
+      return message.util.send({
+        embed: {
+          color: COLORS.FAIL,
+          description: 'Permission hierarchy isn\'t sufficed.'
+        }
+      });
+    }
 
     if (err.is) {
       return message.util.send({
