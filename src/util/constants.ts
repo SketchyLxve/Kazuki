@@ -1,5 +1,5 @@
 import {
-  Guild,
+  ClientEvents, Guild,
   GuildChannel,
   GuildMember,
 
@@ -56,6 +56,11 @@ export interface BaseCommandData {
   target?: boolean;
 }
 
+export interface BaseEventData {
+  event: keyof ClientEvents;
+  type: 'on' | 'once';
+}
+
 export interface CategoryData<T> {
   description: string;
   reaction: string;
@@ -70,7 +75,8 @@ export interface CommandExample {
 }
 
 export interface NMLClientOptions {
-  cmdDir?: string;
+  cmdDir: string;
+  eventDir: string;
   prefixes?: string[];
 }
 
@@ -150,6 +156,31 @@ export enum COLORS {
   SUCCESS = 43878
 }
 
+export enum USER_ACTION_COLORS {
+  UPDATE = 32896,
+  DELETE = 16738657,
+  CREATE = 7855479
+}
+
+export enum USER_ACTIONS {
+  CHANNEL_CREATE = 'Channel Create',
+  CHANNEL_DELETE = 'Channel Delete',
+  CHANNEL_MODIFY = 'Channel Update',
+  BAN_ADD = 'Ban Add',
+  BAN_REMOVE = 'Ban Remove',
+  EMOJI_CREATE = 'Emoji Create',
+  EMOJI_REMOVE = 'Emoji Remove',
+  GUILD_MODIFY = 'Guild Update',
+  INVITE_CREATE = 'Invite Create',
+  INVITE_DELETE = 'Invite Delete',
+  MESSAGE_DELETE = 'Message Delete',
+  MESSAGE_MODIFY = 'Message Update',
+  ROLE_CREATE = 'Role Create',
+  ROLE_DELETE = 'Role Delete',
+  ROLE_MODIFY = 'Role Update',
+  STATE_MODIFY = 'VC Update'
+}
+
 export enum PUNISHMENT {
   NORMAL = 'NORMAL',
   SOFT = 'SOFT',
@@ -164,6 +195,57 @@ export enum PUNISHMENT {
 export type ActionType = 'ban' | 'blacklist' | 'tempban' | 'softban' | 'kick' | 'mute' | 'unmute' | 'unban' | 'promote' | 'partial demote' | 'full demote' | 'fd' | 'pd';
 
 export type ActionDemoteData = Omit<ActionHandlerTypeData & { demoteCategory: string }, 'duration'>;
+
+export type AllClientEvents =
+  | 'channelCreate'
+  | 'channelDelete'
+  | 'channelPinsUpdate'
+  | 'channelUpdate'
+  | 'debug'
+  | 'disconnect'
+  | 'emojiCreate'
+  | 'emojiDelete'
+  | 'emojiUpdate'
+  | 'error'
+  | 'guildBanAdd'
+  | 'guildBanRemove'
+  | 'guildCreate'
+  | 'guildDelete'
+  | 'guildIntegrationsUpdate'
+  | 'guildMemberAdd'
+  | 'guildMemberRemove'
+  | 'guildMembersChunk'
+  | 'guildMemberSpeaking'
+  | 'guildMemberUpdate'
+  | 'guildUnavailable'
+  | 'guildUpdate'
+  | 'invalidated'
+  | 'inviteCreate'
+  | 'inviteDelete'
+  | 'message'
+  | 'messageDelete'
+  | 'messageDeleteBulk'
+  | 'messageReactionAdd'
+  | 'messageReactionRemove'
+  | 'messageReactionRemoveAll'
+  | 'messageReactionRemoveEmoji'
+  | 'messageUpdate'
+  | 'presenceUpdate'
+  | 'rateLimite'
+  | 'ready'
+  | 'roleCreate'
+  | 'roleDelete'
+  | 'roleUpdate'
+  | 'shardDisconnect'
+  | 'shardError'
+  | 'shardReady'
+  | 'shardReconnecting'
+  | 'shardResume'
+  | 'typingStart'
+  | 'userUpdate'
+  | 'voiceStateUpdate'
+  | 'warn'
+  | 'webhookUpdate';
 
 export type BaseCommandReaction = '⚒️' | '🛡️' | '💵' | '❓' | '💻' | '🚙';
 
