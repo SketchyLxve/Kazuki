@@ -195,7 +195,7 @@ export class EconomyHandler {
       if (activity?.activityLevel === 5) return;
 
       if (required[activity?.activityLevel] <= activity?.currentMessages ?? 0 + 1) {
-        const msg = await message.channel.send(`⬆️ | Level up! Current level: ${activity?.activityLevel + 1}`);
+        const msg = await message.channel.send(`\⬆️ | Level up! Current level: ${activity?.activityLevel + 1}`);
         await activityRepository.increment(criteria, 'activityLevel', 1);
         await msg.delete({ timeout: 5000 });
       }
@@ -256,8 +256,8 @@ export class EconomyHandler {
       }
 
       if (n.channel && n.mute && member.lastJoined) {
-        member.allHours += (Date.now() - member.lastJoined.getTime());
-        member.currentHours = Date.now() - member.lastJoined.getTime();
+        member.allHours += Date.now() - (member.lastJoined?.getTime?.() ?? Date.now());
+        member.currentHours = Date.now() - (member.lastJoined?.getTime?.() ?? Date.now());
         member.lastJoined = null;
 
         await vcRepository.save(member);
