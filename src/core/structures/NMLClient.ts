@@ -1,6 +1,5 @@
 import {
-  Client,
-  ClientOptions,
+  Client, ClientEvents, ClientOptions,
   Collection,
   GuildMember,
   Message, MessageEmbed, Snowflake, TextChannel, User
@@ -21,24 +20,32 @@ import { MuteTask as MuteTaskInstance } from '../../tasks/Mute';
 import { UnbanTask as UnbanTaskInstance } from '../../tasks/Unban';
 import { COLORS, NMLClientOptions } from '../../util/constants';
 import { BaseCommand } from './BaseCommand';
+import { BaseEvent } from './BaseEvent';
 // import { SystemChannelManager } from '../../managers/SystemChannelManager';
 
 export class NMLClient extends Client {
   public commands: Collection<string, BaseCommand>;
+  public events: Collection<string, BaseEvent>;
   public options: ClientOptions;
   public prefixes: string[];
   public tasks: Collection<string, MuteTaskInstance | UnbanTaskInstance>;
-  public cmdDir?: string;
+  protected cmdDir: string;
+  protected eventDir: string;
   protected embed: MessageEmbed = new MessageEmbed();
+  private connection;
 
   public constructor(options: ClientOptions & NMLClientOptions) {
     super(options);
 
     this.cmdDir = options.cmdDir;
 
+    this.eventDir = options.eventDir;
+
     this.prefixes = options.prefixes ?? [];
 
     this.commands = new Collection();
+
+    this.events = new Collection();
 
     this.tasks = new Collection();
 
@@ -79,8 +86,17 @@ export class NMLClient extends Client {
   }
 
   public async init() {
+    this.connection = await createConnection({
+      ...(await getConnectionOptions(process.env.NODE_ENV)),
+      namingStrategy: new SnakeNamingStrategy()
+    });
+
     await this.loadRecursively(this.cmdDir)
-      .then(() => this.setup());
+      .then(async () => {
+        await this.loadEvents(this.eventDir).then(async () => {
+          await this.setup();
+        });
+      });
   }
 
   public async loadRecursively(dir: string) {
@@ -95,7 +111,7 @@ export class NMLClient extends Client {
       }
 
       const command = new ((req => req.default || req[Object.keys(req)[0]])(
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        // eslint-disable-next-line
         require(`${dir}/${res}`)
       ))() as BaseCommand;
 
@@ -109,27 +125,47 @@ export class NMLClient extends Client {
     }
   }
 
-  public async setup() {
+  public async loadEvents(dir: string) {
+    const events = fs.readdirSync(dir);
+
+    for (const res of events) {
+      const stat = fs.statSync(`${dir}/${res}`);
+
+      if (stat.isDirectory()) {
+        await this.loadEvents(`${dir}/${res}`);
+        continue;
+      }
+
+      const event = new ((req => req.default || req[Object.keys(req)[0]])(
+        // eslint-disable-next-line
+        require(`${dir}/${res}`)
+      ))() as BaseEvent;
+
+      if (!event.event) event.event = res.split('.')[0] as keyof ClientEvents;
+
+      if (!this.events.has(event.event as string)) this.events.set(event.event as string, event);
+
+      this[event.type](event.event, event.exec.bind(null, this));
+
+      console.log(`[EVENT]: Successfully loaded Client#${event.event}`);
+    }
+  }
+
+  public setup() {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.login(process.env.TOKEN);
 
-    const connection = await createConnection({
-      ...(await getConnectionOptions(process.env.NODE_ENV)),
-      name: 'default',
-      namingStrategy: new SnakeNamingStrategy()
-    });
-
-    if (connection) console.log(`[TYPEORM]: Established a successful connection to the database.`);
+    if (this.connection) console.log(`[TYPEORM]: Established a successful connection to the database.`);
 
     return this.once('ready', async () => {
       console.log(`[DISCORD]: Established a successful WS connection to Discord's gateway.`);
 
       // All the repositories (tables); quite messy.
-      const guildRepository = connection.getRepository(Guild);
-      const activityRepository = connection.getRepository(Activity);
-      const vcRepository = connection.getRepository(VCActivity);
-      const mtRepository = connection.getRepository(MuteTaskModel);
-      const btRepository = connection.getRepository(UnbanTaskModel);
+      const guildRepository = this.connection.getRepository(Guild);
+      const activityRepository = this.connection.getRepository(Activity);
+      const vcRepository = this.connection.getRepository(VCActivity);
+      const mtRepository = this.connection.getRepository(MuteTaskModel);
+      const btRepository = this.connection.getRepository(UnbanTaskModel);
 
       // Loop over all guilds.
       for (const [id, guild] of this.guilds.cache) {

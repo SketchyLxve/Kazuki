@@ -13,6 +13,7 @@ class NMLMessage extends Struct { }
 
 const client = new NMLClient({
   cmdDir: `${__dirname}/commands`,
+  eventDir: `${__dirname}/events`,
   partials: ['GUILD_MEMBER', 'USER', 'MESSAGE', 'REACTION', 'CHANNEL']
 });
 
