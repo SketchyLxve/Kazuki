@@ -61,6 +61,7 @@ export default class MuteAction extends Action {
 
     if (['--h', '-h'].some(h => this.message.content.toLowerCase().includes(h))) {
       await this.target.roles.set([
+        ...cantRemove,
         this.message.guild.roles.cache.find(role => role.name.toLowerCase().includes('mute')).id
       ], audit);
 
