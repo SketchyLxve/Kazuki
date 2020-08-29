@@ -55,20 +55,24 @@ export default class MuteAction extends Action {
 
     if (this.target instanceof User) this.target = await this.message.guild.members.fetch(this.target);
 
-    const roles = this.target.roles?.cache.filter(r => !r.managed || r.id !== this.message.guild.id).keyArray() ?? [];
-    const cantRemove = this.target.roles.cache.filter(r => r.managed || r.id === this.message.guild.id).keyArray() ?? [];
+    const cantRemove = this.target.roles.cache.filter(r => r.managed || r.id === this.message.guild.id);
+    const roles = this.target.roles.cache.filter(r => cantRemove.every(e => e.id !== r.id));
     const audit = this.handler.audit;
 
+    console.log(
+      roles.map(r => r.name),
+      cantRemove.map(r => r.name)
+    )
     if (['--h', '-h'].some(h => this.message.content.toLowerCase().includes(h))) {
       await this.target.roles.set([
-        ...cantRemove,
+        ...cantRemove.keyArray(),
         this.message.guild.roles.cache.find(role => role.name.toLowerCase().includes('mute')).id
       ], audit);
 
       await mrRepository.save({
         guildID: this.message.guild.id,
         memberID: this.target.id,
-        roles
+        roles: roles.keyArray()
       });
 
       this.handler.punishmentType = 'HARD';
@@ -88,7 +92,7 @@ export default class MuteAction extends Action {
 
     await this.target.roles.set(
       [
-        ...cantRemove,
+        ...cantRemove.keyArray(),
         ...this.target.roles.cache.filter(role =>
           Boolean(role.name.match(/^[0-9]{1,2}/g)?.length)).map(r => r.id),
         this.message.guild.roles.cache.find(r => r.name.toLowerCase().includes('exiled') || r.name.startsWith('mute'))
@@ -102,13 +106,13 @@ export default class MuteAction extends Action {
       const raw = await mtRepository.save({
         guildID: this.message.guild.id,
         memberID: this.target.id,
-        roles,
+        roles: roles.keyArray(),
         time
       });
 
       await new MuteTask(this.client, {
         time,
-        roles,
+        roles: roles.keyArray(),
         guildID: this.message.guild.id,
         memberID: this.target.id
       }).execute(raw.id);
@@ -116,7 +120,7 @@ export default class MuteAction extends Action {
       await mrRepository.save({
         guildID: this.message.guild.id,
         memberID: this.target.id,
-        roles
+        roles: roles.keyArray()
       });
 
       const context = stripIndent`
