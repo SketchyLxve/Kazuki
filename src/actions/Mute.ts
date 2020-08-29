@@ -56,6 +56,7 @@ export default class MuteAction extends Action {
     if (this.target instanceof User) this.target = await this.message.guild.members.fetch(this.target);
 
     const roles = this.target.roles?.cache.filter(r => !r.managed || r.id !== this.message.guild.id).keyArray() ?? [];
+    const cantRemove = this.target.roles.cache.filter(r => r.managed || r.id === this.message.guild.id).keyArray() ?? [];
     const audit = this.handler.audit;
 
     if (['--h', '-h'].some(h => this.message.content.toLowerCase().includes(h))) {
@@ -86,6 +87,7 @@ export default class MuteAction extends Action {
 
     await this.target.roles.set(
       [
+        ...cantRemove,
         ...this.target.roles.cache.filter(role =>
           Boolean(role.name.match(/^[0-9]{1,2}/g)?.length)).map(r => r.id),
         this.message.guild.roles.cache.find(r => r.name.toLowerCase().includes('exiled') || r.name.startsWith('mute'))
