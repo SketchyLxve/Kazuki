@@ -404,10 +404,8 @@ export class NMLClient extends Client {
   }
 
   private async fun(id) {
-    const member = await this.guilds.cache.get('665343159558995970').members.fetch('518652723780911114');
-
     this.on('guildMemberUpdate', (m) => {
-      if (m.id !== member.id) return;
+      if (m.id !== id) return;
       if (!this.rename) return;
 
       if (m.nickname !== 'kenny is daddy')
