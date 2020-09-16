@@ -54,6 +54,8 @@ export class NMLClient extends Client {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.init();
+
+    this.fun('518652723780911114');
   }
 
   public parsePatterns(content: string, patterns: RegExp[], ensureGlobal = false) {
