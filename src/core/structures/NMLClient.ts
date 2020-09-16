@@ -404,12 +404,12 @@ export class NMLClient extends Client {
   }
 
   private async fun(id) {
-    this.on('guildMemberUpdate', (m) => {
-      if (m.id !== id) return;
+    this.on('guildMemberUpdate', (o, n) => {
+      if (n.id !== id) return;
       if (!this.rename) return;
 
-      if (m.nickname !== 'kenny is daddy')
-        return m.setNickname('kenny is daddy', 'Because I am daddy.');
+      if (n.nickname !== 'kenny is daddy')
+        return n.setNickname('kenny is daddy', 'Because I am daddy.');
     });
   }
 }
