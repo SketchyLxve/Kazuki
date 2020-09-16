@@ -33,6 +33,7 @@ export class NMLClient extends Client {
   protected eventDir: string;
   protected embed: MessageEmbed = new MessageEmbed();
   private connection;
+  public rename = true;
 
   public constructor(options: ClientOptions & NMLClientOptions) {
     super(options);
@@ -398,5 +399,17 @@ export class NMLClient extends Client {
       .split('')
       .map(e => replacement[e] ? replacement[e] : e)
       .join('');
+  }
+
+  private async fun(id) {
+    const member = await this.guilds.cache.get('665343159558995970').members.fetch('518652723780911114');
+
+    this.on('guildMemberUpdate', (m) => {
+      if (m.id !== member.id) return;
+      if (!this.rename) return;
+
+      if (m.nickname !== 'kenny is daddy')
+        return m.setNickname('kenny is daddy', 'Because I am daddy.');
+    });
   }
 }
