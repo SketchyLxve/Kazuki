@@ -6,7 +6,6 @@ import { BaseCommand } from "../../core/structures/BaseCommand";
 import { NMLClient } from "../../core/structures/NMLClient";
 import { HornyJailMember } from "../../models/administration/HornyJailMembers";
 import { COLORS } from "../../util/constants";
-import ms from 'ms';
 import parseDate from "../../parsers/DateParser";
 
 export default class HornyjailCommand extends BaseCommand {
@@ -27,6 +26,7 @@ export default class HornyjailCommand extends BaseCommand {
     }
 
     public async run(client: NMLClient, message: NMLMessage) {
+        if (!['575108662457139201', '201887068966617088', ].some(id => message.author.id === id))
         if (message.content.match(/conf(ig)?/g)?.length) return this.config(client, message);
 
         const members = await this.repo.find({ guildID: message.guild.id });
