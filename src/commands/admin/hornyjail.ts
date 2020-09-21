@@ -7,6 +7,7 @@ import { NMLClient } from "../../core/structures/NMLClient";
 import { HornyJailMember } from "../../models/administration/HornyJailMembers";
 import { COLORS } from "../../util/constants";
 import ms from 'ms';
+import parseDate from "../../parsers/DateParser";
 
 export default class HornyjailCommand extends BaseCommand {
     private repo = getRepository(HornyJailMember);
@@ -29,8 +30,8 @@ export default class HornyjailCommand extends BaseCommand {
         if (message.content.match(/conf(ig)?/g)?.length) return this.config(client, message);
 
         const members = await this.repo.find({ guildID: message.guild.id });
-        const time = message.content.match(/--time=(\d\w ?(\d\w)?)/g)?.[0];
-
+        const t = parseDate(message.content);
+        
         if (!members.length)
             return message.util!.send({
                 embed: {
@@ -39,16 +40,13 @@ export default class HornyjailCommand extends BaseCommand {
                 }
             });
 
-        console.log(members);
-
         for (const member of members) {
-            console.log(member);
             await new MuteAction(client, {
                 message,
                 reason: 'Horny Jail',
                 target: await message.guild.members.fetch(member.id),
                 action: 'mute',
-                duration: time ? ms(time) : 180000,
+                duration: t.total ? t.total : 180000,
                 punishment: 'MUTE'
             }).commit();
         }
