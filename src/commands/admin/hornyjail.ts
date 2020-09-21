@@ -28,8 +28,8 @@ export default class HornyjailCommand extends BaseCommand {
     public async run(client: NMLClient, message: NMLMessage) {
         if (message.content.match(/conf(ig)?/g)?.length) return this.config(client, message);
 
-        const members = await this.repo.find();
-        const [time] = message.content.match(/--time=(\d\w ?(\d\w)?)/g);
+        const members = await this.repo.find({ guildID: message.guild.id });
+        const time = message.content.match(/--time=(\d\w ?(\d\w)?)/g)?.[0];
 
         if (!members.length)
             return message.util!.send({
@@ -39,7 +39,10 @@ export default class HornyjailCommand extends BaseCommand {
                 }
             });
 
+        console.log(members);
+
         for (const member of members) {
+            console.log(member);
             await new MuteAction(client, {
                 message,
                 reason: 'Horny Jail',
